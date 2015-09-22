@@ -103,12 +103,41 @@ Run at noon: ping cs.umass.edu\\
 28 packets transmitted, 28 received, 0\% packet loss, time 27039ms\\
 rtt min/avg/max/mdev = 11.343/15.693/27.391/3.756 ms\\
 
+Run at midnight: ping cs.umass.edu\\
+--- cs.umass.edu ping statistics ---\\
+34 packets transmitted, 34 received, 0\% packet loss, time 33094ms\\
+rtt min/avg/max/mdev = 13.467/28.777/94.725/15.830 ms\\
+
+The average time at midnight was much higher.  Perhaps more students were hitting the umass server to submit homework or get CS homework help, which caused more delay in the application processing time.  There was also another person using the internet in my apartment at midnight, so the WiFi layer may have delayed sending the packets in order to share the medium.  Different switches may have been used as well which may have led to a longer delay.
+
 \section*{Answer 3}
 $d_{e2e} = 2*d_{proc} + \sum_{i=1}^3 \frac{L}{R_i} + \sum_{i=1}^3 d_i s_i$
 
 \section*{Answer 4}
 
 \section*{Answer 5}
+\begin{enumerate}
+	traceroute -T reddit.com\\
+	\item[a]
+	Run at midnight: RTT = 204.037ms\\
+
+	\item[b]
+	Run at midnight: Num Routers = 8\\
+
+	\item[c]
+	There are only 2 ISPs that are traveled through (RCN and AS13335)\\
+	The largest gap in time is when switching between the two (36ms)\\
+
+	\item[d]
+	traceroute -T world.guns.ru\\
+	RTT = 971.708\\
+	Num Routers = 13\\
+	There are 3 ISPs that are traveled through (RCN, retn, and comfortel)\\
+	Interestingly enough, retn has a node in NY, so the hop between RCN and retn was not very large.  However, the next hop brought the packet all the way to Russia, which took a long time.  The next hop was then to Comfortel, which took equally as long (about 130ms)\\
+\end{enumerate}
+
+\section*{Answer 6}
+
 
 \noindent\hrulefill
 
