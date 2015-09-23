@@ -111,34 +111,100 @@ rtt min/avg/max/mdev = 13.467/28.777/94.725/15.830 ms\\
 The average time at midnight was much higher.  Perhaps more students were hitting the umass server to submit homework or get CS homework help, which caused more delay in the application processing time.  There was also another person using the internet in my apartment at midnight, so the WiFi layer may have delayed sending the packets in order to share the medium.  Different switches may have been used as well which may have led to a longer delay.
 
 \section*{Answer 3}
-$d_{e2e} = 2*d_{proc} + \sum_{i=1}^3 \frac{L}{R_i} + \sum_{i=1}^3 d_i s_i$
+$d_{e2e} = 2*d_{proc} + \sum_{i=1}^3 \frac{L}{R_i} + \sum_{i=1}^3 \frac{d_i}{s_i}$\\
+$d_{e2e} = 2*(3ms) + 3*(\frac{1500 * 8}{2Mbps}) + (5000/(2.5*10^5)) + (4000/(2.5*10^5)) + (1000/(2.5*10^5)) = $\\
+$6ms + 3*\frac{1.2*10^4 bits}{2 * 10^6 bps} + .02s + .016s + .004s =$\\
+$6ms + 3*(6ms) + 20ms + 16ms + 4ms = 64ms$
 
 \section*{Answer 4}
+The sum from $1...n-1 = n(n-1)/2$\\
+Using this, the average queuing delay $= \frac{LN(N-1)}{2RN} = \frac{L(N-1)}{2R}$\\
+\newline
+By the same calculation above, we get that the average delay is $\frac{L(N-1)}{2R}$
 
 \section*{Answer 5}
 \begin{enumerate}
-	traceroute -T reddit.com\\
+	traceroute reddit.com\\
 	\item[a]
 	Run at midnight: RTT = 204.037ms\\
+	Run at 8am: RTT = 271.765ms\\
+	Run at 6pm: RTT = 173.784\\
+
+	Average time: 216.640\\
+	Std Dev: 50.171\\
 
 	\item[b]
 	Run at midnight: Num Routers = 8\\
+	Run at 8am: Num Routers = 8\\
+	Run at 6pm: Num Routers = 8\\
+
+	The paths did not change from time to time
 
 	\item[c]
 	There are only 2 ISPs that are traveled through (RCN and AS13335)\\
 	The largest gap in time is when switching between the two (36ms)\\
 
 	\item[d]
-	traceroute -T world.guns.ru\\
-	RTT = 971.708\\
+	traceroute world.guns.ru\\
+	$RTT_1$ = 971.708\\
+	$RTT_2$ = 2045.324\\
+	$RTT_3$ = 993.653\\
+	Avg: 1336.895, Std Dev: 613.616\\
 	Num Routers = 13\\
 	There are 3 ISPs that are traveled through (RCN, retn, and comfortel)\\
 	Interestingly enough, retn has a node in NY, so the hop between RCN and retn was not very large.  However, the next hop brought the packet all the way to Russia, which took a long time.  The next hop was then to Comfortel, which took equally as long (about 130ms)\\
+	It takes much longer to go to sites in Russia than it does to get to sites within the US.  Especially sites that are not as likely to be cached (like google)
 \end{enumerate}
 
 \section*{Answer 6}
+\begin{enumerate}
+	\item[a]
+	$d_{prop} = 20,000km / 2.5*10^5km/s = 80ms$\\
+	Bandwidth-delay-product = $2Mbps * .08s = .16Mb$\\
 
+	\item[b]
+	To send $8 * 10^5$ bits, it would take $\frac{2 * 10^6}{8 * 10^5} = 2.5s$\\
+	Because it takes $1$ bit $80ms$ to travel through the wire, and we can only send $2Mbps$ down the wire, by the time the bit gets there, another $.16Mb$ have been put on the wire.  Therefore, the maximum number of bits on the link at any given time will be $.16Mb$\\
 
+	\item[c]
+	The bandwidth-delay product is the maximum number of bits that can be on the link at any given time
+
+	\item[d]
+	We can fit $160,000$ bits at a time on the link.  The link is $20,000,000m$ long\\
+	$\frac{2,000,000}{160,000} = 125m$  So yes it is longer than a football field\\
+
+	\item[e]
+	$\frac{m}{Rs}$ Where $m$ is in meters, $R$ is bits per second, and $s$ is meters per second
+\end{enumerate}
+
+\section*{Answer 7}
+\begin{enumerate}
+	\item[a]
+	$\frac{8*10^6 bits}{2*10^6Mbps} = 4$ seconds\\
+	Considering there are 3 links, it would take 12 seconds\\
+
+	\item[b]
+	It would take $\frac{1*10^4}{2*10^6} = .005$ seconds\\
+	The second packet is fully recieved by the first switch after .01 seconds\\
+
+	\item[c]
+	It will take $.(005 * 802) = 4.01$ seconds\\
+	This takes a third of the time as sending one big message\\
+
+	\item[d]
+	This can also reduce the bandwidth useage for a particular line.  Instead of one long message being sent, now that is is split up into segments, other packets can be sent in the iterim as well.  The bandwidth is not being all used up by a single process.\\
+
+	\item[e]
+	The drawbacks are it takes more time to assemble the packets once it reaches its destination. There is a lot of overhead to put the packets into their correct places.  Plus packets can be dropped, and then the destination has an incomplete file.   
+\end{enumerate}
+
+\section*{Answer 8}
+For 1000: $100 * 1000 = 100,000$ bytes overhead.  However the loss is only $1000$ bytes\\
+For 5000: $100 * 200 = 20,000$ bytes overhead. Loss is $5000$ bytes\\
+For 10000: $100 * 100 = 10,000$ bytes overhead. Loss is $10000$ bytes\\
+For 20000: $100 * 50 = 5000$ bytes overhead.  Loss is $20000$ bytes\\
+
+The most optimal here would appear to be $10,000$ because the overhead is only one extra packet.
 \noindent\hrulefill
 
 
