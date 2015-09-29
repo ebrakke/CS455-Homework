@@ -6,7 +6,7 @@ class ClientSocket:
         self.socket.connect((host, port))
 
     def send_msg(self, msg='Default Message'):
-        total_sent = 0
+        msg = ''
         sent = self.socket.send(msg)
         self.get_response()
 
