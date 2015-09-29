@@ -25,4 +25,3 @@ if __name__ == "__main__":
     host, port = sys.argv[1], int(sys.argv[2])
     client = ClientSocket(host, port)
     client.send_msg()
-    client.get_response()
