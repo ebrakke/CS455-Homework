@@ -144,7 +144,7 @@ class ServerSocket:
                 raise MessageValidationError
             phase, seq, payload = msg_args
             actual_seq_num = args[0]
-            validation_checks = [phase == 'm', int(seq) == actual_seq_num, len(payload) == int(self.msg_size),\
+            validation_checks = [phase == 'm', int(seq) == actual_seq_num, len(payload) == int(self.msg_size), \
                                  not (int(seq) > self.num_probes)]
             if not all(validation_checks):
                 raise MessageValidationError
@@ -160,31 +160,29 @@ class ServerSocket:
         # Run the server through the protocol
         try:
             self.initialize()
-            while 1:
+        except InitializationException:
+            print "Could not start the server"
+            sys.exit(1)
+        while 1:
+            try:
                 self.listen()
                 # Listen is blocking, so next phase won't fire until someone is connected
                 self.setup_phase()  # Run through the setup phase with the client
                 self.measurement_phase()  # Do the measurement phase with the client
                 self.termination_phase()  # Do the termination phase with the client
                 self.close_connection()  # Close the connection with the client
-        except InitializationException as e:
-            # Could not open the socket
-            print "Could no initialize the server"
-        except ListenException as e:
-            # Could not listen on the port
-            print "Could not listen on port {}".format(self.port)
-        except SetupPhaseException as e:
-            # Send the client the setup phase error
-            self.send_message(self.SETUP_PHASE_CLIENT_ERROR)
-            self.close_connection()
-        except MeasurementPhaseException as e:
-            # Send the client the measurement phase error
-            self.send_message(self.MEASUREMENT_PHASE_CLIENT_ERROR)
-            self.close_connection()
-        except TerminationPhaseException as e:
-            # Send the client the termination phase error
-            self.send_message(self.TERMINATION_PHASE_CLIENT_ERROR)
-            self.close_connection()
+            except ListenException as e:  # Could not listen on the port
+                print "Could not listen on port {}".format(self.port)
+
+            except SetupPhaseException as e:  # Send the client the setup phase error
+                self.send_message(self.SETUP_PHASE_CLIENT_ERROR)
+                self.close_connection()
+            except MeasurementPhaseException as e:  # Send the client the measurement phase error
+                self.send_message(self.MEASUREMENT_PHASE_CLIENT_ERROR)
+                self.close_connection()
+            except TerminationPhaseException as e:  # Send the client the termination phase error
+                self.send_message(self.TERMINATION_PHASE_CLIENT_ERROR)
+                self.close_connection()
 
 
 # Exceptions
