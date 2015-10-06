@@ -13,20 +13,16 @@ class ServerSocket:
     CLOSING_MESSAGE = "200 OK: Closing Connection\n"
     CLIENT_TIMEOUT_TIME = 10
 
-    def __init__(self, port=58101, host=None):
+    def __init__(self, port=58101):
         # Create the server socket with specifications
         self.port = port
-        self.host = host
+        self.host = socket.gethostbyname(socket.gethostname())
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket = None
         self.measurement_type = None
         self.num_probes = None
         self.msg_size = None
         self.server_delay = None
-
-        # If no host was supplied, try to find it
-        if not self.host:
-            self.host = socket.gethostbyname(socket.gethostname())
 
     def initialize(self):
         # Create the server socket on specified host and port
@@ -232,14 +228,13 @@ class SendMessageException(Exception):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print "Please specify HOST and PORT"
+    if len(sys.argv) != 2:
+        print "Please specify PORT"
         sys.exit(1)
     # They specified the right number of argument
-    if not sys.argv[2].isdigit():
+    if not sys.argv[1].isdigit():
         print "Please enter a integer for the PORT number"
         sys.exit(1)
-    host = sys.argv[1]
-    port = int(sys.argv[2])
-    server = ServerSocket(port, host)
+    port = int(sys.argv[1])
+    server = ServerSocket(port)
     server.do_protocol()

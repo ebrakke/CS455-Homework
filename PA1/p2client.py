@@ -205,7 +205,7 @@ class ReceiveMessageException(Exception):
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:
-        print 'Please supply HOST PORT MEASUREMENT_TYPE, NUMBER_OF_PROBEs, MESSAGE_SIZE, [SERVER_DELAY]'
+        print 'Please supply HOST PORT MEASUREMENT_TYPE, NUMBER_OF_PROBES, MESSAGE_SIZE, [SERVER_DELAY]'
         sys.exit(1)
     argv = sys.argv
     if len (argv) < 7:
