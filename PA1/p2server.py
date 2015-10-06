@@ -128,7 +128,7 @@ class ServerSocket:
             validation_checks = [
                 phase == 's', meas_type in ['rtt', 'tput'], num_probes.isdigit(), \
                 (meas_type == 'rtt' and int(msg_size) in [1, 100, 200, 400, 800, 1000]) \
-                or (meas_type == 'tput' and msg_size in ['1K', '2K', '4K', '8K', '16K', '32K']),
+                or (meas_type == 'tput' and int(msg_size) in [1000, 2000, 4000, 8000, 16000, 32000]),
                 serv_delay.isdigit()]
             if not all(validation_checks):
                 raise MessageValidationError
