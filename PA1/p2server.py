@@ -11,7 +11,6 @@ class ServerSocket:
     TERMINATION_PHASE_CLIENT_ERROR = "404 ERROR: Invalid Connection Termination Message\n"
     READY_MESSAGE = "200 OK: Ready\n"
     CLOSING_MESSAGE = "200 OK: Closing Connection\n"
-    CLIENT_TIMEOUT_TIME = 10
 
     def __init__(self, port=58101):
         # Create the server socket with specifications
@@ -36,7 +35,6 @@ class ServerSocket:
         # Listen for incoming connections
         try:
             self.client_socket, address = self.sock.accept()
-            self.client_socket.settimeout(self.CLIENT_TIMEOUT_TIME)  # Make sure the client times out after 5 seconds
             print "New connection from {}".format(address)
         except socket.error:
             raise ListenException

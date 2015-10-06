@@ -101,7 +101,7 @@ class ClientSocket:
 
     def send_message(self, msg):
         # send a message to the client
-        self.sock.sendall(msg)
+        self.sock.send(msg)
 
     def get_response(self, bufsize=1024):
         res = self.sock.recv(bufsize)
