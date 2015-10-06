@@ -103,8 +103,6 @@ class ServerSocket:
                 self.measurement_type = args[1]
                 self.num_probes = args[2]
                 self.msg_size = args[3]
-                if self.measurement_type == 'tput':
-                    self.msg_size = self.msg_size.strip('K') + '000'
                 self.server_delay = args[4]
 
             if phase == 'm':
