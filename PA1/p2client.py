@@ -16,9 +16,9 @@ class ClientSocket:
         self.server_delay = server_delay
         self.trip_times = list()
         try:
-            self.validate_input()
             if 'K' in self.msg_size:
                 self.msg_size = self.msg_size.strip('K') + '000'
+            self.validate_input()
         except ValidationException as e:
             print e.msg
             sys.exit(1)
@@ -120,7 +120,7 @@ class ClientSocket:
         print "The measurements for {} were\n {}".format(self.measurement_type, self.trip_times)
 
         # Write the output to a file for plotting later
-        with open('{}{}.txt'.format(self.measurement_type, self.msg_size), 'w') as f:
+        with open('{}_{}_{}.txt'.format(self.measurement_type, self.msg_size, self.host_address), 'w') as f:
             [f.write('{}, '.format(p)) for p in self.trip_times]
             f.close()
 
@@ -145,10 +145,8 @@ class ClientSocket:
             raise ValidationException('Not a valid number of probes {}'.format(self.num_probes))
         if self.measurement_type == 'rtt' and not self.msg_size.isdigit():
             raise ValidationException('Not a valid message size: {}'.format(self.msg_size))
-        if self.measurement_type == 'rtt' and int(self.msg_size) not in [1, 100, 200, 400, 800, 1000]:
-            raise ValidationException('Not a valid message size for rtt: {}'.format(self.msg_size))
-        if self.measurement_type == 'tput' and self.msg_size not in ['1K', '2K', '4K', '8K', '16K', '32K']:
-            raise ValidationException('Not a valid message size for tput: {}'.format(self.msg_size))
+        if not int(self.msg_size) > 0:
+            raise ValidationException('Not a valid message size: {}'.format(self.msg_size))
         if not self.server_delay.isdigit():
             raise ValidationException('Not a valid server delay: {}'.format(self.server_delay))
 
