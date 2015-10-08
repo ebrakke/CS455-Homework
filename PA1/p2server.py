@@ -82,10 +82,14 @@ class ServerSocket:
     def get_response(self):
         # Get a message from the client
         try:
+            start = time.time()
             msg = self.client_socket.recv(1024)
             # If the whole message was not received, continue getting it
             while '\n' not in msg:
                 msg += self.client_socket.recv(1024)
+                # Set a timeout (in case user did not send a newline)
+                if time.time() - start > 10:
+                    raise GetMessageException
             return msg
         except socket.timeout:
             # The socket has timed out
