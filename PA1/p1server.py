@@ -10,7 +10,6 @@ class ServerSocket:
         # Create the server
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            print socket.gethostbyname(socket.gethostname())
             self.sock.bind((socket.gethostbyname(socket.gethostname()), self.port))
             self.sock.listen(1)
         except socket.error:
@@ -24,9 +23,9 @@ class ServerSocket:
             raise AcceptException
 
     def get_message(self):
-        # Get a message from an open port of up to 2048 bytes
+        # Get a message from an open port of up to 1024 bytes
         try:
-            self.message = self.client_socket.recv(2048)
+            self.message = self.client_socket.recv(1024)
             print self.message
             self.send_message()
         except socket.error:

@@ -2,7 +2,6 @@
 import socket
 import sys
 import time
-from matplotlib import pyplot as plt
 
 
 class ClientSocket:
@@ -120,7 +119,10 @@ class ClientSocket:
         print "The measurements for {} were\n {}".format(self.measurement_type, self.trip_times)
 
         # Write the output to a file for plotting later
-        with open('{}_{}_{}.txt'.format(self.measurement_type, self.msg_size, self.host_address), 'w') as f:
+        filename = '{}_{}_{}'.format(self.measurement_type, self.msg_size, self.host_address)
+        if int(self.server_delay) > 0:
+            filename = 'sd_{}_{}_{}'.format(self.measurement_type, self.msg_size, self.host_address)
+        with open('{}.txt'.format(filename), 'w') as f:
             [f.write('{}, '.format(p)) for p in self.trip_times]
             f.close()
 

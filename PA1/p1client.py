@@ -4,6 +4,9 @@ import sys, socket
 class ClientSocket:
     def __init__(self, host, port):
         # Initialize class variables
+        if not port.isdigit():
+            print "Port must be an integer"
+            sys.exit(1)
         self.host = host
         self.port = int(port)
         # Create the socket and connect to the host
