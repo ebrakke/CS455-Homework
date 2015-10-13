@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\usepackage{amssymb,amsmath,amsthm,url,graphicx}
+\usepackage{fancyhdr}
+
+\def\shownotes{1}   % set 1 for version with author notes
+                    % set 0 for no notes
+
+
+
+%uncomment to get hyperlinks
+%\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Some macros (you can ignore everything until "end of macros")
+
+\topmargin 0pt \advance \topmargin by -\headheight \advance
+\topmargin by -\headsep
+
+\textheight 8.9in
+
+\oddsidemargin 0pt \evensidemargin \oddsidemargin \marginparwidth
+0.5in
+
+\textwidth 6.5in
+
+%%%%%%
+
+\providecommand{\vs}{vs. }
+\providecommand{\ie}{\emph{i.e.,} }
+\providecommand{\eg}{\emph{e.g.,} }
+\providecommand{\cf}{\emph{cf.,} }
+\providecommand{\etc}{\emph{etc.} }
+
+\newcommand{\getsr}{\gets_{\mbox{\tiny R}}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\bit}{\{0,1\}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\eqdef}{\stackrel{def}{=}}
+\newcommand{\To}{\rightarrow}
+\newcommand{\e}{\epsilon}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Gen}{\mathsf{Gen}}
+\newcommand{\Enc}{\mathsf{Enc}}
+\newcommand{\Dec}{\mathsf{Dec}}
+\newcommand{\Sign}{\mathsf{Sign}}
+\newcommand{\Ver}{\mathsf{Ver}}
+
+\providecommand{\mypara}[1]{\smallskip\noindent\emph{#1} }
+\providecommand{\myparab}[1]{\smallskip\noindent\textbf{#1} }
+\providecommand{\myparasc}[1]{\smallskip\noindent\textsc{#1} }
+\providecommand{\para}{\smallskip\noindent}
+
+
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{ex}{Exercise}
+\newtheorem{definition}{Definition}
+
+%%%%%%%  Author Notes %%%%%%%d
+%
+\ifnum\shownotes=1
+\newcommand{\authnote}[2]{{ $\ll$\textsf{\footnotesize #1 notes: #2}$\gg$}}
+\else
+\newcommand{\authnote}[2]{}
+\fi
+\newcommand{\Snote}[1]{{\authnote{Solution}{#1}}}
+\newcommand{\Inote}[1]{{\authnote{Solution}{#1}}}
+\newcommand{\Ichanged}[1]{{\authnote{Changed}{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\VAR}{\mathrm{VAR}}
+
+
+
+% end of macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% page counting, header/footer
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\lhead{\footnotesize \parbox{11cm}{CS455, Boston University, Fall 2015} }
+\rhead{Erik Brakke}
+\renewcommand{\headheight}{24pt}
+
+\begin{document}
+
+\title{Lab 2}
+\author{Erik Brakke}
+\maketitle
+
+\thispagestyle{fancy}
+
+\myparab{Collaborators: }  .
+ 
+ 
+\section*{Basic HTTP GET}
+\begin{enumerate}
+	\item[1] Both the server and client are running HTTP 1.1 as can be seen in te GET request and the response
+
+	\item[2] My browser accepts english - United States as indicated by the Accepted Languages fields: en-US,en;q=0.8
+
+	\item[3] My IP: 192.168.2.9, server IP: 128.119.245.12\\
+
+	\item[4] The status code return is "200 OK"\\
+
+	\item[5] The file was last modified: Tue, 13 Oct 2015 05:59:01 GMT\\
+
+	\item[6] 128 bytes of data are being returned to the browser\\
+
+	\item[7] No.
+\end{enumerate}
+
+\section*{Conditional HTTP GET}
+\begin{enumerate}
+	\item[8] No, there is no line that says "IF-MODIFIED-SINCE".  There is in fact a line that says "Pragma: no-cache"\\
+
+	\item[9] Yes it did.  The content length of the header says 371 bytes, and the Line-based text data field is included in the response\\
+
+	\item[10] Yes there is an "IF-MODIFIED-SINCE" field, If-Modified-Since: Tue, 13 Oct 2015 05:59:01 GMT\\
+
+	\item[11] The code for the second response is "304 Not Modified".  The text is not returned in this HTTP packet.  This is because the file has not been modified since the time we specified in the request header, so the server is just informing us that nothing has changed and use the page stored in the cache.  
+\end{enumerate}
+
+\section*{Long Documents}
+\begin{enumeration}
+	\item[12] My browser only send 1 HTTP GET request.  This was send by packet No. 27\\
+
+	\item[13] The status code was send in packet No. 37\\
+
+	\item[14] The status code and phrase is "200 OK"\\
+
+	\item[15] 4 packets were needed to send the payload.  The first three packets were full (1448 bytes) and the last packet contained 519 bytes\\
+\end{enumeration}
+
+\section*{Embedded Objects}
+\begin{enumerate}
+	\item[16] My browser sent 4 GET requests.  They were sent to 128.119.245.12, 128.119.240.90, and 165.193.140.14
+
+	\item[17] They were downloaded in paralell.  I can tell this was the case because the browser sent the request for the second image before receiving the server response for the first image\\
+\end{enumerate}
+
+\section*{Authentication}
+\begin{enumerate}
+	\item[18] The initial status code is 401 Unauthorized
+
+	\item[19] The field: Authorization: Basic is now included
+\end{enumerate}
+
+\end{document} 
