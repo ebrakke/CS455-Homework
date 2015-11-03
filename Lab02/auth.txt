@@ -1,0 +1,86 @@
+      1 0.000000    192.168.2.9           128.119.245.12        HTTP     534    GET /wireshark-labs/protected_pages/HTTP-wireshark-file5.html HTTP/1.1 
+
+Frame 1: 534 bytes on wire (4272 bits), 534 bytes captured (4272 bits)
+Ethernet II, Src: HonHaiPr_c1:6b:ad (10:08:b1:c1:6b:ad), Dst: BelkinIn_98:a4:90 (ec:1a:59:98:a4:90)
+Internet Protocol Version 4, Src: 192.168.2.9 (192.168.2.9), Dst: 128.119.245.12 (128.119.245.12)
+Transmission Control Protocol, Src Port: 40897 (40897), Dst Port: 80 (80), Seq: 1, Ack: 1, Len: 468
+Hypertext Transfer Protocol
+    GET /wireshark-labs/protected_pages/HTTP-wireshark-file5.html HTTP/1.1\r\n
+    Host: gaia.cs.umass.edu\r\n
+    Connection: keep-alive\r\n
+    Pragma: no-cache\r\n
+    Cache-Control: no-cache\r\n
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.120 Chrome/37.0.2062.120 Safari/537.36\r\n
+    Accept-Encoding: gzip,deflate,sdch\r\n
+    Accept-Language: en-US,en;q=0.8\r\n
+    \r\n
+    [Full request URI: http://gaia.cs.umass.edu/wireshark-labs/protected_pages/HTTP-wireshark-file5.html]
+    [HTTP request 1/1]
+    [Response in frame: 2]
+
+      2 0.014401    128.119.245.12        192.168.2.9           HTTP     785    HTTP/1.1 401 Unauthorized  (text/html)
+
+Frame 2: 785 bytes on wire (6280 bits), 785 bytes captured (6280 bits)
+Ethernet II, Src: BelkinIn_98:a4:90 (ec:1a:59:98:a4:90), Dst: HonHaiPr_c1:6b:ad (10:08:b1:c1:6b:ad)
+Internet Protocol Version 4, Src: 128.119.245.12 (128.119.245.12), Dst: 192.168.2.9 (192.168.2.9)
+Transmission Control Protocol, Src Port: 80 (80), Dst Port: 40897 (40897), Seq: 1, Ack: 469, Len: 719
+Hypertext Transfer Protocol
+    HTTP/1.1 401 Unauthorized\r\n
+    Date: Tue, 13 Oct 2015 16:11:23 GMT\r\n
+    Server: Apache/2.4.6 (CentOS) OpenSSL/1.0.1e-fips PHP/5.4.16 mod_perl/2.0.9dev Perl/v5.16.3\r\n
+    WWW-Authenticate: Basic realm="wireshark-students only"\r\n
+    Content-Length: 381\r\n
+    Keep-Alive: timeout=5, max=100\r\n
+    Connection: Keep-Alive\r\n
+    Content-Type: text/html; charset=iso-8859-1\r\n
+    \r\n
+    [HTTP response 1/1]
+    [Time since request: 0.014401000 seconds]
+    [Request in frame: 1]
+Line-based text data: text/html
+
+      3 34.956193   192.168.2.9           128.119.245.12        HTTP     593    GET /wireshark-labs/protected_pages/HTTP-wireshark-file5.html HTTP/1.1 
+
+Frame 3: 593 bytes on wire (4744 bits), 593 bytes captured (4744 bits)
+Ethernet II, Src: HonHaiPr_c1:6b:ad (10:08:b1:c1:6b:ad), Dst: BelkinIn_98:a4:90 (ec:1a:59:98:a4:90)
+Internet Protocol Version 4, Src: 192.168.2.9 (192.168.2.9), Dst: 128.119.245.12 (128.119.245.12)
+Transmission Control Protocol, Src Port: 41301 (41301), Dst Port: 80 (80), Seq: 1, Ack: 1, Len: 527
+Hypertext Transfer Protocol
+    GET /wireshark-labs/protected_pages/HTTP-wireshark-file5.html HTTP/1.1\r\n
+    Host: gaia.cs.umass.edu\r\n
+    Connection: keep-alive\r\n
+    Pragma: no-cache\r\n
+    Cache-Control: no-cache\r\n
+    Authorization: Basic d2lyZXNoYXJrLXN0dWRlbnRzOm5ldHdvcms=\r\n
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n
+    User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.120 Chrome/37.0.2062.120 Safari/537.36\r\n
+    Accept-Encoding: gzip,deflate,sdch\r\n
+    Accept-Language: en-US,en;q=0.8\r\n
+    \r\n
+    [Full request URI: http://gaia.cs.umass.edu/wireshark-labs/protected_pages/HTTP-wireshark-file5.html]
+    [HTTP request 1/1]
+    [Response in frame: 4]
+
+      4 34.979177   128.119.245.12        192.168.2.9           HTTP     558    HTTP/1.1 200 OK  (text/html)
+
+Frame 4: 558 bytes on wire (4464 bits), 558 bytes captured (4464 bits)
+Ethernet II, Src: BelkinIn_98:a4:90 (ec:1a:59:98:a4:90), Dst: HonHaiPr_c1:6b:ad (10:08:b1:c1:6b:ad)
+Internet Protocol Version 4, Src: 128.119.245.12 (128.119.245.12), Dst: 192.168.2.9 (192.168.2.9)
+Transmission Control Protocol, Src Port: 80 (80), Dst Port: 41301 (41301), Seq: 1, Ack: 528, Len: 492
+Hypertext Transfer Protocol
+    HTTP/1.1 200 OK\r\n
+    Date: Tue, 13 Oct 2015 16:11:58 GMT\r\n
+    Server: Apache/2.4.6 (CentOS) OpenSSL/1.0.1e-fips PHP/5.4.16 mod_perl/2.0.9dev Perl/v5.16.3\r\n
+    Last-Modified: Tue, 13 Oct 2015 05:59:01 GMT\r\n
+    ETag: "84-521f6247d1c55"\r\n
+    Accept-Ranges: bytes\r\n
+    Content-Length: 132\r\n
+    Keep-Alive: timeout=5, max=100\r\n
+    Connection: Keep-Alive\r\n
+    Content-Type: text/html; charset=UTF-8\r\n
+    \r\n
+    [HTTP response 1/1]
+    [Time since request: 0.022984000 seconds]
+    [Request in frame: 3]
+Line-based text data: text/html
