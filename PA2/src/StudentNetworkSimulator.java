@@ -142,7 +142,8 @@ public class StudentNetworkSimulator extends NetworkSimulator
         Packet packet = new Packet(seq, 0, checksum, data);
 
         // If we've filled the window, buffer the packets in a queue
-        if (outstandingPackets.size() >= WindowSize) {
+        if (outstandingPackets.size() >= WindowSize || bufferedPackets.size() > 0) {
+            //System.out.println(packet.toString() + " Added to buffer");
             bufferedPackets.add(packet);
         } else {
             // Restart the timer if there are still packets out there
