@@ -1,0 +1,42 @@
+Erik Brakke
+HW#2 Design Document
+
+The sender (A) receives a call from Layer5 and attempts to hand the message off to Layer3.
+First, a packet is constructed with the proper sequence number, checksum, and payload.  The ACK number does not matter for the sender.
+The sequence number is calculated by a global variable called CurrentSeqNumA, which is meant to keep track of the current
+sequence number for the current message for A.  The checksum is calculated with a function that takes in all of the packet information,
+turns everything into an integer, and then sums it up.  Once the packet is created, A will check to see if there is room in the window
+to send the packet.  If not, A will add the packet to a buffer.  The buffer is a linked list of packets with no size limit.  This could
+potentially be bad if millions of messages are being sent because the buffer could grow exponentially and take up a lot of space.  But for
+this assignment I felt a size limit did not matter.  If A is able to put the packet in the window, it adds it to a queue of outstanding packets
+and, if the timer was already running, stops the timer.  Then starts the timer and sends the message.
+
+The receiver (B) receives a packets when it gets a message from layer 3.  First, B checks to see if the packet is corrupt.  This is done
+with a function that takes a packet and makes sure the checksum is valid for the contents of the packet.  If the message is corrupt, then
+B will do nothing and trigger a timeout on A's side.  The downside of this is that A will continue to send messages in the window that B will
+ignore.  However, with a corrupt packet it is hard to tell what this packet should have been, thus any NACK would be hard to create.  If
+the packet is not corrupt, then B will check to see if it is the correct in order packet.  To do so, B keeps track of the sequence number
+he is expecting in a variable called CurrentSeqB.  If the packet seq number does not match this number, then B will retransmit an ACK for the
+last received in order packet.  B will continue to do this for any other packets that arrive out of order as well and does not just wait for
+A's retransmission.  The downside to this is that B will send a lot of cumulative ACKS to show that he has received an out of order packet.
+However, it is easier for B to just continue reACKing until the correct packet is received.  For this assignment, I feel it does not make a huge
+impact.  Once B receives the correct message, he will send an ACK for the message to B.
+
+A will then look for an ACK.  He expects the ACKS to come in order.  This is a design decision.  He could only expect ACKS for outstanding packets,
+that way when an ACK is lost but ACK + 1 comes in, then A knows B got two packets, but this is a little bit harder to implement.  Because the sequence
+numbers wrap around, it is not as simple as just looking for ACKS greater than CurrentSeqA.  It could be done but has not been done in this assignment.
+Once A is happy with the ACK, he will stop the timer and, if there are packets in the buffer, he will send a packet from the buffer.  If not
+he will just wait to be called upon by Layer5 again.
+
+If A ever gets a timeout event, he will retransmit all outstanding packets to B and start the timer again.  He will then start looking for ACKS
+from B.
+
+
+COMPILATION INSTRUCTIONS:
+Navigate to the 'src' directory and execute 'compile'.  Then run the Project file and follow the instructions.
+
+LOGISTICS:
+Because we are using GBN, there is not need to buffer packets at the receiver.  Though it would lead to less retransmission of packets
+if we would store OOO packets in a buffer on the receiver.  It would also be a bit more complicated to implement (More like a selective repeat).
+A dynamic RTO could have also been used.  This would ensure that we were efficiently timing out and not retransmitting too early.  Though because the RTT
+does not vary drastically through this medium, a static RTO is sufficient.

@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class StudentNetworkSimulator extends NetworkSimulator
 {
@@ -99,7 +100,17 @@ public class StudentNetworkSimulator extends NetworkSimulator
     // Also add any necessary methods (e.g. checksum of a String)
     private int currentSeqA;
     private int currentSeqB;
-    private Packet outstandingPacket;
+    private boolean isFirstPacket = true;
+    private Queue<Packet> bufferedPackets;
+    private Queue<Packet> outstandingPackets;
+    private int lastAckedPacket;
+    private boolean waitingForRx;
+
+    // Stats variables
+    private int numOriginalPacketsTrans = 0;
+    private int numCorruptPackets;
+    private int numRetrans = 0;
+    private int numAcksSent = 0;
 
     // This is the constructor.  Don't touch!
     public StudentNetworkSimulator(int numMessages,
@@ -124,14 +135,26 @@ public class StudentNetworkSimulator extends NetworkSimulator
     // the receiving upper layer.
     protected void aOutput(Message message)
     {
+        // Gather all things to make a packet
         String data = message.getData();
         int seq = currentSeqA;
-        int ack = 0;
-        int checksum = createCheckSum(seq, ack, data);
-        Packet packet = new Packet(seq, ack, checksum, data);
-        outstandingPacket = packet;
-        startTimer(A, RxmtInterval);
-        toLayer3(A, packet);
+        int checksum = createCheckSum(seq, 0, data);
+        Packet packet = new Packet(seq, 0, checksum, data);
+
+        // If we've filled the window, buffer the packets in a queue
+        if (outstandingPackets.size() >= WindowSize) {
+            bufferedPackets.add(packet);
+        } else {
+            // Restart the timer if there are still packets out there
+            if(outstandingPackets.size() > 0) {
+                stopTimer(A);
+            }
+            outstandingPackets.add(packet);
+            startTimer(A, RxmtInterval);
+            numOriginalPacketsTrans++;
+            toLayer3(A, packet);
+        }
+        currentSeqA = nextSequenceNumber(currentSeqA);
     }
     
     // This routine will be called whenever a packet sent from the B-side 
@@ -141,11 +164,33 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void aInput(Packet packet)
     {
         if(isValidPacket(packet)) {
-            if(packet.getAcknum() == currentSeqA) {
-                currentSeqA = nextSequenceNumber(currentSeqA);
+            if(packet.getAcknum() == lastAckedPacket) {
+                // A packet got lost and retransmit
+                retransmitOutstandingPackets();
+                return;
             }
-        }
+            // This is a good ACK
+            Packet p = outstandingPackets.remove();
+            while (p.getSeqnum() != packet.getAcknum()) {
+                p = outstandingPackets.remove();
+            }
+            lastAckedPacket = packet.getAcknum();
+            if(outstandingPackets.size() == 0){
+                stopTimer(A);
+            }
 
+            // Send a message from the buffer if there are any
+            if(bufferedPackets.size() > 0){
+                Packet newPacket = bufferedPackets.remove();
+                outstandingPackets.add(newPacket);
+                numOriginalPacketsTrans++;
+                stopTimer(A);
+                startTimer(A, RxmtInterval);
+                toLayer3(A, newPacket);
+            }
+        } else {
+            numCorruptPackets++;
+        }
     }
     
     // This routine will be called when A's timer expires (thus generating a 
@@ -154,9 +199,8 @@ public class StudentNetworkSimulator extends NetworkSimulator
     // for how the timer is started and stopped. 
     protected void aTimerInterrupt()
     {
-        stopTimer(A);
+        retransmitOutstandingPackets();
         startTimer(A, RxmtInterval);
-        toLayer3(A, outstandingPacket);
     }
     
     // This routine will be called once, before any of your other A-side 
@@ -166,6 +210,9 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void aInit()
     {
         currentSeqA = FirstSeqNo;
+        outstandingPackets = new ConcurrentLinkedQueue<Packet>();
+        bufferedPackets = new LinkedList<Packet>();
+        lastAckedPacket = -1;
     }
     
     // This routine will be called whenever a packet sent from the B-side 
@@ -175,11 +222,29 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void bInput(Packet packet)
     {
         if(isValidPacket(packet)) {
-            if(packet.getSeqnum() == currentSeqB){
-                toLayer5(packet.getPayload());
-                int checksum = createCheckSum(currentSeqB, currentSeqB, "");
-                toLayer3(B, new Packet(currentSeqB, currentSeqB, checksum));
+            if(packet.getSeqnum() != currentSeqB && isFirstPacket) {
+                return;
             }
+            if(packet.getSeqnum() != currentSeqB && !waitingForRx){
+                // A previous packet has been lost
+                int prevAck = ((currentSeqA - 1) + LimitSeqNo) % LimitSeqNo;
+                Packet ack = createAck(prevAck);
+                numRetrans++;
+                waitingForRx = true;
+                toLayer3(B, ack);
+            }
+            else {
+                // This is the packet we were expecting
+                waitingForRx = false;
+                toLayer5(packet.getPayload());
+                Packet ack = createAck(currentSeqB);
+                numAcksSent++;
+                toLayer3(B, ack);
+                currentSeqB = nextSequenceNumber(currentSeqB);
+            }
+        } else {
+            // The packet was corrupt
+            numCorruptPackets++;
         }
     }
     
@@ -190,12 +255,18 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void bInit()
     {
         currentSeqB = FirstSeqNo;
+        waitingForRx = false;
+
     }
 
     // Use to print final statistics
     protected void Simulation_done()
     {
         System.out.println("done");
+        System.out.println("Number of original packets transmitted: " + numOriginalPacketsTrans);
+        System.out.println("Number of original ACKS transmitted: " + numAcksSent);
+        System.out.println("Number of retransmissions: " + numRetrans);
+        System.out.println("Number of corrupt packets: " + numCorruptPackets);
     }
 
     // My class variables
@@ -203,7 +274,13 @@ public class StudentNetworkSimulator extends NetworkSimulator
     // Use this to increment the sequence number
     private int nextSequenceNumber(int currentSeq)
     {
-        return (currentSeq + 1) % LimitSeqNo;
+        return (currentSeq + 1) % (LimitSeqNo);
+    }
+
+    // Create an ack
+    private Packet createAck(int seq) {
+        int checkSum = createCheckSum(0, seq, "");
+        return new Packet(0, seq, checkSum, "");
     }
 
     // Create a checksum for a packet
@@ -228,5 +305,14 @@ public class StudentNetworkSimulator extends NetworkSimulator
         String data = packet.getPayload();
 
         return checksum == createCheckSum(seq, ack, data);
+    }
+
+    // Retransmit the outstanding packets
+    private void retransmitOutstandingPackets()
+    {
+        numRetrans += outstandingPackets.size();
+        for(Packet packet: outstandingPackets) {
+            toLayer3(A, packet);
+        }
     }
 }
