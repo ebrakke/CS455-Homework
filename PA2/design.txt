@@ -22,21 +22,24 @@ A's retransmission.  The downside to this is that B will send a lot of cumulativ
 However, it is easier for B to just continue reACKing until the correct packet is received.  For this assignment, I feel it does not make a huge
 impact.  Once B receives the correct message, he will send an ACK for the message to B.
 
-A will then look for an ACK.  He expects the ACKS to come in order.  This is a design decision.  He could only expect ACKS for outstanding packets,
-that way when an ACK is lost but ACK + 1 comes in, then A knows B got two packets, but this is a little bit harder to implement.  Because the sequence
-numbers wrap around, it is not as simple as just looking for ACKS greater than CurrentSeqA.  It could be done but has not been done in this assignment.
-Once A is happy with the ACK, he will stop the timer and, if there are packets in the buffer, he will send a packet from the buffer.  If not
-he will just wait to be called upon by Layer5 again.
+A will then look for an ACK.  As long as the ACK isn't the same as the last ACK he received, he will dequeue packets from the outstanding packets
+queue until he has found the Acked packet.  If the ACK is the same as the last acked packet, then he knows to retransmit the outstanding packets.
+
 
 If A ever gets a timeout event, he will retransmit all outstanding packets to B and start the timer again.  He will then start looking for ACKS
 from B.
 
 
 COMPILATION INSTRUCTIONS:
-Navigate to the 'src' directory and execute 'compile'.  Then run the Project file and follow the instructions.
+Navigate to the 'src' directory and execute 'compile'.  Then run 'java Project' and follow the instructions.
 
 LOGISTICS:
 Because we are using GBN, there is not need to buffer packets at the receiver.  Though it would lead to less retransmission of packets
 if we would store OOO packets in a buffer on the receiver.  It would also be a bit more complicated to implement (More like a selective repeat).
 A dynamic RTO could have also been used.  This would ensure that we were efficiently timing out and not retransmitting too early.  Though because the RTT
 does not vary drastically through this medium, a static RTO is sufficient.
+
+TESTING:
+To test, I simply made sure that when there was no loss or corruption that all of the packets in the output file were in order and all there.
+To test with loss and corruption, I first made sure that the packets that did eventually get there were in order (becuase not all packets will
+arrive before the program terminates).  Then I made sure that the number of lost and corrupt packets matched that of the probabilities.

@@ -1,0 +1,224 @@
+-- * Network Simulator v1.0 * --
+Enter number of messages to simulate (> 0): [10] 30
+Enter packet loss probability (0.0 for no loss): [0.0] .2
+Enter packet corruption probability (0.0 for no corruption): [0.0] .2
+Enter average time between messages from sender's layer 5 (> 0.0): [1000] 10
+Enter window size (> 0): [8]
+Enter retransmission timeout (>0.0) [15.0] 20.0
+Enter trace level (>= 0): [0] 2
+Enter random seed: [0] 2233
+
+EVENT time: 9.181188390758996  type: 1  entity: 0
+toLayer3: packet being corrupted
+
+EVENT time: 11.710562456129644  type: 1  entity: 0
+
+EVENT time: 14.562120426038392  type: 2  entity: 1
+
+EVENT time: 17.07113864558855  type: 2  entity: 1
+
+EVENT time: 29.176305429242838  type: 1  entity: 0
+
+EVENT time: 31.21677297280801  type: 1  entity: 0
+
+EVENT time: 38.104831080050054  type: 2  entity: 1
+
+EVENT time: 46.13483077486496  type: 1  entity: 0
+
+EVENT time: 46.49555955687124  type: 2  entity: 1
+
+EVENT time: 51.344187749870294  type: 2  entity: 1
+
+EVENT time: 55.99475081637013  type: 1  entity: 0
+toLayer3: packet being lost
+
+EVENT time: 58.93307290871914  type: 1  entity: 0
+
+EVENT time: 67.1631214331492  type: 2  entity: 1
+
+EVENT time: 76.96890163884396  type: 1  entity: 0
+
+EVENT time: 78.77010406811732  type: 1  entity: 0
+
+EVENT time: 83.11752677999206  type: 2  entity: 1
+
+EVENT time: 91.16245002594074  type: 1  entity: 0
+
+EVENT time: 94.58906826990571  type: 1  entity: 0
+
+EVENT time: 96.96890163884396  type: 0  entity: 0
+toLayer3: packet being corrupted
+
+EVENT time: 99.31586657307658  type: 2  entity: 1
+
+EVENT time: 102.11615344706566  type: 1  entity: 0
+
+EVENT time: 103.37345500045778  type: 2  entity: 1
+
+EVENT time: 105.04452650532548  type: 2  entity: 0
+toLayer3: packet being lost
+
+EVENT time: 107.5746940519425  type: 2  entity: 1
+
+EVENT time: 110.8023010956145  type: 2  entity: 0
+
+EVENT time: 112.80312509537035  type: 1  entity: 0
+
+EVENT time: 113.89168980986969  type: 2  entity: 1
+toLayer3: packet being lost
+
+EVENT time: 115.33176671651357  type: 2  entity: 0
+
+EVENT time: 116.5202795495468  type: 1  entity: 0
+
+EVENT time: 119.43192846461379  type: 2  entity: 1
+
+EVENT time: 127.12225714896084  type: 2  entity: 1
+
+EVENT time: 129.61638233588673  type: 1  entity: 0
+
+EVENT time: 130.2945036164434  type: 1  entity: 0
+
+EVENT time: 131.05954161198767  type: 2  entity: 1
+
+EVENT time: 135.07126071962645  type: 2  entity: 1
+
+EVENT time: 135.33176671651358  type: 0  entity: 0
+toLayer3: packet being corrupted
+
+EVENT time: 139.71526230658895  type: 2  entity: 1
+
+EVENT time: 147.07406842249824  type: 2  entity: 1
+
+EVENT time: 149.75249488814967  type: 1  entity: 0
+
+EVENT time: 155.33176671651358  type: 0  entity: 0
+toLayer3: packet being corrupted
+toLayer3: packet being corrupted
+toLayer3: packet being lost
+
+EVENT time: 156.58021790215764  type: 2  entity: 1
+
+EVENT time: 158.36054567094942  type: 2  entity: 1
+
+EVENT time: 162.9345072786645  type: 2  entity: 0
+toLayer3: packet being lost
+
+EVENT time: 163.4519791253395  type: 2  entity: 1
+
+EVENT time: 163.75988036744286  type: 1  entity: 0
+toLayer3: packet being lost
+
+EVENT time: 165.7393414105655  type: 2  entity: 1
+
+EVENT time: 167.4743491927854  type: 2  entity: 1
+
+EVENT time: 173.172917874691  type: 2  entity: 0
+toLayer3: packet being lost
+
+EVENT time: 176.7322000793481  type: 2  entity: 1
+
+EVENT time: 179.7424237800226  type: 1  entity: 0
+
+EVENT time: 182.33368938261054  type: 2  entity: 1
+
+EVENT time: 182.62715536973172  type: 2  entity: 0
+
+EVENT time: 183.4287240211188  type: 2  entity: 1
+toLayer3: packet being corrupted
+
+EVENT time: 184.223761711478  type: 1  entity: 0
+
+EVENT time: 186.0517288735618  type: 2  entity: 1
+
+EVENT time: 188.6065858943449  type: 2  entity: 0
+
+EVENT time: 190.537797173986  type: 2  entity: 1
+
+EVENT time: 190.62504959257788  type: 2  entity: 0
+
+EVENT time: 195.22751548814355  type: 1  entity: 0
+
+EVENT time: 198.6828821680349  type: 2  entity: 0
+
+EVENT time: 199.34794152653583  type: 2  entity: 1
+
+EVENT time: 200.8844264046144  type: 1  entity: 0
+
+EVENT time: 200.99633777886285  type: 2  entity: 0
+
+EVENT time: 209.3108615375225  type: 2  entity: 1
+
+EVENT time: 213.11319315164647  type: 1  entity: 0
+
+EVENT time: 215.96240119632557  type: 2  entity: 1
+
+EVENT time: 218.6828821680349  type: 0  entity: 0
+toLayer3: packet being corrupted
+toLayer3: packet being corrupted
+
+EVENT time: 224.95959349345378  type: 2  entity: 1
+
+EVENT time: 227.17883846552934  type: 2  entity: 1
+
+EVENT time: 232.03833124790185  type: 1  entity: 0
+
+EVENT time: 234.7543565172277  type: 2  entity: 1
+
+EVENT time: 237.91515854365673  type: 2  entity: 1
+
+EVENT time: 238.6828821680349  type: 0  entity: 0
+toLayer3: packet being lost
+toLayer3: packet being corrupted
+toLayer3: packet being lost
+
+EVENT time: 238.97640919217505  type: 1  entity: 0
+
+EVENT time: 245.91338847010712  type: 2  entity: 1
+
+EVENT time: 250.97900326548051  type: 2  entity: 1
+
+EVENT time: 253.79985961485642  type: 1  entity: 0
+
+EVENT time: 258.6828821680349  type: 0  entity: 0
+toLayer3: packet being corrupted
+toLayer3: packet being lost
+toLayer3: packet being corrupted
+toLayer3: packet being corrupted
+
+EVENT time: 259.41697439497057  type: 2  entity: 1
+
+EVENT time: 261.05349894711145  type: 1  entity: 0
+
+EVENT time: 264.86162907803583  type: 2  entity: 1
+toLayer3: packet being lost
+
+EVENT time: 273.5551011688589  type: 1  entity: 0
+
+EVENT time: 274.11123996704004  type: 2  entity: 1
+
+EVENT time: 278.39652699362165  type: 2  entity: 1
+
+EVENT time: 278.6828821680349  type: 0  entity: 0
+toLayer3: packet being lost
+toLayer3: packet being corrupted
+toLayer3: packet being lost
+toLayer3: packet being corrupted
+
+EVENT time: 279.70717490157784  type: 2  entity: 1
+
+EVENT time: 282.30930509353925  type: 2  entity: 1
+
+EVENT time: 282.4878688924833  type: 1  entity: 0
+
+EVENT time: 284.4979094821009  type: 2  entity: 0
+
+EVENT time: 285.7295449690237  type: 1  entity: 0
+
+EVENT time: 286.4522232734153  type: 1  entity: 0
+Simulator terminated at time 286.4522232734153
+done
+Number of original packets transmitted: 20
+Number of original ACKS transmitted: 13
+Number of retransmissions: 56
+Number of corrupt packets: 8

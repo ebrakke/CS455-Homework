@@ -170,6 +170,7 @@ public class StudentNetworkSimulator extends NetworkSimulator
                 return;
             }
             // This is a good ACK
+            // Remove all received packets from the queue
             Packet p = outstandingPackets.remove();
             while (p.getSeqnum() != packet.getAcknum()) {
                 p = outstandingPackets.remove();
@@ -222,7 +223,9 @@ public class StudentNetworkSimulator extends NetworkSimulator
     protected void bInput(Packet packet)
     {
         if(isValidPacket(packet)) {
+            // This means the first message was corrupt.  Wait for retransmit
             if(packet.getSeqnum() != currentSeqB && isFirstPacket) {
+                waitingForRx = true;
                 return;
             }
             if(packet.getSeqnum() != currentSeqB && !waitingForRx){
