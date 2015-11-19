@@ -1,0 +1,42 @@
+Erik Brakke
+CS455 - PA3
+
+Compilation:
+To compile, navigate to to 'src' and run 'javac *.java'.  Then type 'java Project3' and follow the instructions
+
+Design:
+To initialize each node, the initial link costs array is supplied to each node as well as the nodename.  The node name is
+saved for use later on because each node needs to know what itself is.  Then using the initial lk_costs, we can fill the
+costs vector array with the supplied values.  Every node that we can not reach, or do not yet know we can reach, is initialized
+to INFINITY.  Then the node sets its lkcosts to the initial_lkcosts and sends the costs to all of its direct neighbors.
+
+When a node receives and update packet, it goes through each entry in costs[x][sender] and updates each entry with the supplied
+information in the packet's array.  In each spot, we put the cost to the sender + the cost the sender advertises.  We do not update
+the costs if it was already INFINITY and is still INFINITY.  After updating all of this information, each node will then reconsider
+it's lkcost array.
+
+To update, we call updateMinCosts(int sender) and supply the sender of the packet we have just received.  Then, for each cost in lkcost,
+we look also at what the cost is to go through the sender for that node.  If we can go through the sender at a lower cost, then we update
+lkcost to reflect that.  We also set this entry in the poison array to be INFINITY (This is the poison reverse part).  If the sender is not
+cheaper, then the entry in the poison array stays the same.  If the sender did not send any cheaper costs, then we do not need to do anything.
+If any of our lkcost entries have changed, then we will send the poison packet to the sender.  The sender will get the poison packet and update
+costs for 'nodename' to ensure that he is never picked as a next hop for the node that 'nodename' is using sender as a next hop for.
+
+To send packets, we simply call sendRoutingInformation which will send lkcosts to the destination.  To send poison packets, we call sendPoison
+and give the poison packet and the destination.
+
+The Link handler works pretty similarly to update.  First, the node updates the cost to the linkid in the costs table.  Then, we need to check to
+see if we have a cheaper path to 'linkid', so we set the cost to 'linkid' to INFINITY and the nextHop node to INFINITY.  Then we can look through the
+costs table and find the cheapest next hop node.  Then, we can leverage the updateMinCosts function by setting lkcosts[linkid] to infinity and passing
+nextHop in as a parameter.  This ensures that the lkcosts array gets updated with nextHop as the next hop.  Then a poison packet will be sent to the next hop
+to ensure the next hop does not choose 'nodename' as a path to 'linkid'.  A drawback of the implementation is that 'nodename' will send a poison packet to
+'linkid' if 'linkid' is still the cheapest path.  This does not really affect anything, but it is a waste of a packet.
+
+Testing:
+I tested with a seed of 3322 and traced the distance tables and lkcosts throughout the whole protocol.  I made sure that packet was send on initialization to all of
+the neighbors, and that poison packets were send correctly.
+
+Drawbacks:
+This implements the split horizon with poison reverse method of updating distance tables.  This is not the best method because infinite loops of packets are still possible
+between more than 2 nodes.  We could implement a version where each node has a picture of the entire network and builds shortest paths accordingly, but that is out of scope
+for this assignment.
