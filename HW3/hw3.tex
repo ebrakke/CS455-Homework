@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage{amssymb,amsmath,amsthm,url,graphicx}
+\usepackage{fancyhdr}
+
+\def\shownotes{1}   % set 1 for version with author notes
+                    % set 0 for no notes
+
+
+
+%uncomment to get hyperlinks
+%\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Some macros (you can ignore everything until "end of macros")
+
+\topmargin 0pt \advance \topmargin by -\headheight \advance
+\topmargin by -\headsep
+
+\textheight 8.9in
+
+\oddsidemargin 0pt \evensidemargin \oddsidemargin \marginparwidth
+0.5in
+
+\textwidth 6.5in
+
+%%%%%%
+
+\providecommand{\vs}{vs. }
+\providecommand{\ie}{\emph{i.e.,} }
+\providecommand{\eg}{\emph{e.g.,} }
+\providecommand{\cf}{\emph{cf.,} }
+\providecommand{\etc}{\emph{etc.} }
+
+\newcommand{\getsr}{\gets_{\mbox{\tiny R}}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\bit}{\{0,1\}}
+\newcommand{\Ex}{\mathbb{E}}
+\newcommand{\eqdef}{\stackrel{def}{=}}
+\newcommand{\To}{\rightarrow}
+\newcommand{\e}{\epsilon}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Gen}{\mathsf{Gen}}
+\newcommand{\Enc}{\mathsf{Enc}}
+\newcommand{\Dec}{\mathsf{Dec}}
+\newcommand{\Sign}{\mathsf{Sign}}
+\newcommand{\Ver}{\mathsf{Ver}}
+
+\providecommand{\mypara}[1]{\smallskip\noindent\emph{#1} }
+\providecommand{\myparab}[1]{\smallskip\noindent\textbf{#1} }
+\providecommand{\myparasc}[1]{\smallskip\noindent\textsc{#1} }
+\providecommand{\para}{\smallskip\noindent}
+
+
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{ex}{Exercise}
+\newtheorem{definition}{Definition}
+
+%%%%%%%  Author Notes %%%%%%%d
+%
+\ifnum\shownotes=1
+\newcommand{\authnote}[2]{{ $\ll$\textsf{\footnotesize #1 notes: #2}$\gg$}}
+\else
+\newcommand{\authnote}[2]{}
+\fi
+\newcommand{\Snote}[1]{{\authnote{Solution}{#1}}}
+\newcommand{\Inote}[1]{{\authnote{Solution}{#1}}}
+\newcommand{\Ichanged}[1]{{\authnote{Changed}{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\VAR}{\mathrm{VAR}}
+
+
+
+% end of macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% page counting, header/footer
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\lhead{\footnotesize \parbox{11cm}{CS455, Boston University, Fall 2015} }
+\rhead{Erik Brakke}
+\renewcommand{\headheight}{24pt}
+
+\begin{document}
+
+\title{Homework 3}
+\author{Erik Brakke}
+\maketitle
+
+\thispagestyle{fancy}
+
+
+\section*{Answer 1}
+\begin{enumerate}
+	\item[(a)] $2MB = 2000KB$.  Segments double with each RTT.  $ceil(log_2(2000)) = 11$. It will take 12 RTT
+
+	\item[(b)] $11 RTT$ to send $2^12KB = 4096KB = 4MB$.  We still have to send 12MB at 2MB per RTT, so $12 + (12/2) = 18RTT$
+
+	\item[(c)] $18 RTT * 200ms = 3600ms$  This is a throughput of $16MB / 3.6s = 4.44MB/s$  Link uilizaion is 3.56\% (4.44MB/s * 8 / 1Gbps) 
+\end{enumerate}
+
+\section*{Answer 2}
+Next hop table A\\
+\begin{tabular}{|c|c|c|}
+\hline
+Dest & Dist & Next Hop\\
+\hline
+A & 0 & A\\
+B & 7 & D\\
+C & 6 & D\\
+D & 3 & D\\
+E & 5 & D\\
+F & 12 & D\\
+\hline
+\end{tabular}
+
+Next hop table B\\
+\begin{tabular}{|c|c|c|}
+\hline
+Dest & Dist & Next Hop\\
+\hline
+A & 7 & E\\
+B & 0 & B\\
+C & 3 & E\\
+D & 4 & E\\
+E & 2 & E\\
+F & 9 & E\\
+\hline
+\end{tabular}
+
+Next hop table C\\
+\begin{tabular}{|c|c|c|}
+\hline
+Dest & Dist & Next Hop\\
+\hline
+A & 6 & E\\
+B & 3 & E\\
+C & 0 & C\\
+D & 3 & E\\
+E & 1 & E\\
+F & 6 & F\\
+\hline
+\end{tabular}
+
+\section*{Answer 3}
+\begin{tabular}{|c|c|c|}\hline
+Dest & Dist & Next Hop\\
+\hline
+Net 1 & 0 & direct\\
+Net 2 & 0 & direct\\
+Net 5 & 8 & Router L\\
+Net 17 & 6 & Router M\\
+Net 22 & 9 & Router J\\
+Net 24 & 6 & Router J\\
+Net 30 & 2 & Router Q\\
+Net 42 & 4 & Router J\\
+\hline
+\end{tabular}
+
+\section*{Answer 4}
+size of 1 cost vector = $8 bits * 60 = 480bits$\\
+Each node sends $480 * 2 = 960bits$ per second\\
+Each link sends $960 * 2 = 1920bits$ per second\\
+If we assume that each link has $C$ capacity, then the capacity consumed is $1920/C$
+
+\section*{Answer 5}
+Yes fragmentation takes place because we have 2000 bytes, but can only send 262 bytes in a frame\\
+$ceil(2000/242) = 9$ fragments would be sent with 242 bytes as the payload and 20 bytes as the header\\ 
+
+\section*{Answer 6}
+\begin{enumerate}
+	\item[(a)]
+	Network address: 145.98.0.0\\
+	Subnet number: 145.98.128.0\\
+	host number: 145.98.224.99\\
+
+	\item[(b)] 145.98.128.0/17
+
+	\item[(c)] There are $2^{11}$ addresses ranged 214.13.192.0 - 214.13.199.255
+
+\end{enumerate}
+
+\section*{Answer 7}
+\begin{enumerate}
+	\item[(a)] 
+	\begin{tabular}{|c|c|}
+	\hline
+	Prefix & Next Hop\\
+	\hline
+	PA & C1.B3.0.0/16\\
+	PB & C1.A0.0.0/12\\
+	Q & C2.0.0.0/8\\
+	\end{tabular}
+
+	\item[(b)]
+	\begin{tabular}{|c|c|}
+	\hline
+	Prefix & Next Hop\\
+	\hline
+	PA & C1.B3.0.0/16\\
+	Q & C1.A0.0.0/12\\
+	Q & C2.0.0.0/8\\
+	R & C2.0B.10.0/20\\
+	\end{tabular}
+\end{enumerate}
+\end{document} 
